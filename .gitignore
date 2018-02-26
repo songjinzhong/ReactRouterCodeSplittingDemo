@@ -1,0 +1,26 @@
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# IDE
+.idea/
+.project
+*.swp
+*.swo
+.vscode
+
+# Dependency, Cache, Temporary
+node_modules/
+bower_components/
+.svn/
+.sass-cache/
+npm-debug.log
+
+# Distribution
+coverage/
+dist/
+docs/
+*.iml
+
+/build
