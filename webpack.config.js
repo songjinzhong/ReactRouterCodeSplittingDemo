@@ -3,10 +3,14 @@ const webpack = require('webpack')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const ENV = process.env.NODE_ENV || 'production'
 const isDEV = ENV === 'production' ? false : true
+
 const publicPath = isDEV
   ? '/'
   : 'http://127.0.0.1:8887/'
-module.exports = {
+
+const cleanPath = isDEV ? [] : ['build']
+
+const config = {
   mode: process.env.NODE_ENV || 'production',
   context: path.join(__dirname, 'src'),
   devServer: {
@@ -16,7 +20,9 @@ module.exports = {
     ],
   },
   entry: {
+    // vendor: ['react', 'react-dom', 'react-router-dom'],
     index: './index.js',
+    test: './index.js',
   },
   output: {
     chunkFilename: '[name].chunk.js',
@@ -48,6 +54,43 @@ module.exports = {
       { test: /\.css$/, loader: 'style-loader!css-loader' },
     ]
   },
+  optimization: {
+    splitChunks: {
+      chunks: "async",
+      minSize: 30000,
+      minChunks: 2,
+      maxAsyncRequests: 5,
+      maxInitialRequests: 3,
+      name: true,
+      cacheGroups: {
+        react: {
+          name: 'react',
+          chunks: 'all',
+          test: /react/,
+          priority: 1,
+        },
+        common: {
+          name: 'common',
+          chunks: 'all',
+          test: /lodash/,
+          minChunks: 2, // 至少两个
+          priority: 2,
+        }
+      }
+      // cacheGroups: {
+      //   vendor: {
+      //     name: 'vendor',
+      //     chunks: 'initial',
+      //     test: /react/,
+      //   },
+      //   lodash: {
+      //     name: 'lodash',
+      //     chunks: 'initial',
+      //     test: /lodash/,
+      //   }
+      // }
+    }
+  },
   plugins: [
     new webpack.LoaderOptionsPlugin({
       options: {
@@ -56,6 +99,10 @@ module.exports = {
         }
       }
     }),
-    new CleanWebpackPlugin(['build']),
+    new CleanWebpackPlugin(cleanPath),
   ]
 }
+if (isDEV) {
+  config.devtool = 'source-map'
+}
+module.exports = config
