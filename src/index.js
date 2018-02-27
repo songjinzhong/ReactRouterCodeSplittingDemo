@@ -14,9 +14,9 @@ import AsyncComponent from './AsyncComponent'
 // import Detail from './detail'
 // import Search from './search'
 
-const List = AsyncComponent(() => import('./list').then(module => module.default))
-const Detail = AsyncComponent(() => import('./detail').then(module => module.default))
-const Search = AsyncComponent(() => import('./search').then(module => module.default))
+const List = AsyncComponent(() => import('./list'/* webpackChunkName:"list" */).then(module => module.default))
+const Detail = AsyncComponent(() => import('./detail'/* webpackChunkName:"detail" */).then(module => module.default))
+const Search = AsyncComponent(() => import('./search'/* webpackChunkName:"search" */).then(module => module.default))
 
 
 class Test extends Component {

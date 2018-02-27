@@ -1,5 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
+const CleanWebpackPlugin = require('clean-webpack-plugin')
 const ENV = process.env.NODE_ENV || 'production'
 const isDEV = ENV === 'production' ? false : true
 const publicPath = isDEV
@@ -54,6 +55,7 @@ module.exports = {
           configFile: './.eslintrc.js'
         }
       }
-    })
+    }),
+    new CleanWebpackPlugin(['build']),
   ]
 }
